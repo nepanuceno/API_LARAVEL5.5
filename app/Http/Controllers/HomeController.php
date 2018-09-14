@@ -25,4 +25,22 @@ class HomeController extends Controller
     {
         return view('backend.index');
     }
+
+    public function rolesPermissions(){
+
+        $nameUser =  auth()->user()->name;
+
+        var_dump("<h1>{$nameUser}</h1>");
+
+        foreach( auth()->user()->roles as $role){
+            echo $role->name." --> ";
+
+            $permissions = $role->permissions;
+
+            foreach($permissions as $permission){
+                echo ",".$permission->name;
+            }
+        } 
+
+    }
 }

@@ -12,14 +12,11 @@
 */
 
 
-
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/', function () {
-        //return view('backend.index');
-        return redirect('/backend');
-    });
+    Route::get('/', 'HomeController@index')->name('index');
+
 
     Route::get('/roles_permissions', 'HomeController@rolesPermissions');
 
@@ -42,6 +39,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/editPermissions','Permissions\PermissionsController@edit')->name('editPermissions');
     Route::post('/updatePermissions','Permissions\PermissionsController@update')->name('updatePermissions');
     Route::get('/deletePermissions/{id}','Permissions\PermissionsController@delete')->name('deletePermissions');
+
+    Route::get('/userRoles/{id}','Usuario\UserRolesController@index')->name('userRoles');
+    Route::post('/userRolesVincular/{id}','Usuario\UserRolesController@vincular')->name('userRolesVincular');
 
     Route::post('/updateUsuario','Usuario\UsuariosController@update')->name('updateUsuario');
     Route::get('/perfil','Usuario\PerfilController@perfil')->name('perfil');

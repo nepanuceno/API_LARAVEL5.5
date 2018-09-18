@@ -5,7 +5,7 @@
       <?php
         $URI = "/storage/foto/avatar_".Auth::user()->id.".png";
       ?>
-      <img src="{{ asset($URI) }}" class="img-circle" alt="User Image">
+      <img src="{{ asset($URI) }}" onerror="this.src='{{ asset('storage/foto/default.png') }}'" class="img-circle" alt="User Image">
     </div>
     <div class="pull-left info">
       <p>{{ config('app.name') }}</p>

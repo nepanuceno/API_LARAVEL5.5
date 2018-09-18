@@ -6,11 +6,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RequestPermission;
 use App\Http\Controllers\Controller;
 use App\Permission;
+use Illuminate\Contracts\Auth\Access\Gate;
+
 class PermissionsController extends Controller
 {
     
-    public function list(){
+    public function list(Gate $gate){
         $permissions = Permission::all();
+
+        if( $gate->denies('manager',$permissions) )
+            abort(403,'Não Autoriazado');
 
         return view('acl.permissions.listPermissions', compact('permissions'));
     }
@@ -20,16 +25,17 @@ class PermissionsController extends Controller
         return view('acl.permissions.addPermission');
     }
 
-    public function add(RequestPermission $request){
-        
-        // $validatedData = $request->validate([
-        //     'name' => 'required|unique:roles|max:50|min:3',
-        //     'label' => 'required',
-        // ]);
+    public function add(RequestPermission $request, Gate $gate){
     
         $permission = new Permission;
         $permission->name = $request->name;
         $permission->label = $request->label;
+
+        if( $gate->denies('manager',$permission) )
+            abort(403,'Não Autoriazado');
+
+        if( $gate->denies('manager',$permission) )
+            abort(403,'Não Autoriazado');
 
         if( $permission->save()){
             return redirect('listPermissions')->with('status', 'Permissão cadastrada com sucesso!');
@@ -39,8 +45,11 @@ class PermissionsController extends Controller
         }
     }
 
-    public function delete($id){
+    public function delete($id, Gate $gate){
         $permission = Permission::destroy($id);
+
+        if( $gate->denies('manager',$permission) )
+            abort(403,'Não Autoriazado');
        
         if($permission){
             return redirect('listPermissions')->with('status', 'Permissão removida com sucesso!');

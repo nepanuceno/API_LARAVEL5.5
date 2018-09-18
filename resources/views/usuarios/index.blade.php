@@ -38,16 +38,16 @@
               <table id="usuarios" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                    <th colspan="3"><center>Informações</center></th>
-                    <th colspan="2"><center>Ações</center></th>
+                    <th colspan="2" style=" text-align: center;"><center>Informações</center></th>
+                    <th colspan="3" style=" text-align: center;"><center>Ações</center></th>
                 </tr>
 
                 <tr>
                     <th style="vertical-align: bottom;">Nome</th>
                     <th style="vertical-align: bottom;">E-Mail</th>
-                    <th style="vertical-align: bottom;">Permissão</th>
-                    <th style="vertical-align: bottom;">Status</th>
-                    <th style="vertical-align: bottom;">Editar</th>
+                    <th colspan="2" style="vertical-align: bottom;  text-align: center;">Permissão</th>
+                    <th style="vertical-align: bottom;  text-align: center;">Status</th>
+                    <th style="vertical-align: bottom;  text-align: center;">Editar</th>
                 </tr>
               </thead>
               <tbody>
@@ -55,14 +55,27 @@
                   <tr>
                     <td>{{ $usuario->name }}</td>
                     <td>{{ $usuario->email }}</td>
-                    <td>Administrador</td>
+                    <td width="8%">
+                      @foreach(App\User::find( $usuario->id)->roles as $role)
+                        <span class="label label-success">{{ $role->name }} </span>
+                      @endforeach
+                   </td>
+
+                   
+                      <td width="8%">
+                        @if(App\User::find($usuario->id)->status==1)
+                          <a class="btn btn-app" href="/userRoles/{{$usuario->id}}"><i class="fa fa-chain text-purple"></i>Vincular Permissão</a>
+                        @endif
+                      </td>
+                   
+
                     @if($usuario->status)
-                      <td><a class="btn btn-app btn-status" data-status="1" data-id="{{ $usuario->id }}" href="#"><i class="fa fa-check-circle text-green"></i>Ativo</a></td>
+                      <td width="5%"><a class="btn btn-app btn-status" data-status="1" data-id="{{ $usuario->id }}" href="#"><i class="fa fa-check-circle text-green"></i>Ativo</a></td>
                     @else
-                      <td><a class="btn btn-app btn-status" data-status="0" data-id="{{ $usuario->id }}" href="#"><i class="fa fa-check-circle text-red"></i>Inativo</a></td>
+                      <td width="5%"><a class="btn btn-app btn-status" data-status="0" data-id="{{ $usuario->id }}" href="#"><i class="fa fa-check-circle text-red"></i>Inativo</a></td>
                     @endif
 
-                    <td><a class="btn btn-app" href="/editaUsuario/{{ $usuario->id }}"><i class="fa fa-edit"></i>Editar</a></td>
+                    <td width="5%"><a class="btn btn-app text-black" href="/editaUsuario/{{ $usuario->id }}"><i class="fa fa-edit"></i>Editar</a></td>
                   </tr>
                 @endforeach
               </tbody>

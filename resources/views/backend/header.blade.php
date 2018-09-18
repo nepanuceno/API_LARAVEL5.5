@@ -224,13 +224,13 @@
           <?php
             $URI = "/storage/foto/avatar_".Auth::user()->id.".png";
           ?>
-            <img src='{{ asset($URI) }}' class="user-image" alt="User Image">
+            <img src='{{ asset($URI) }}' onerror="this.src='{{ asset('storage/foto/default.png') }}'" class="user-image" alt="User Image">
             <span class="hidden-xs">{{ Auth::user()->name }}</span>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header">
-              <img src="{{ asset($URI) }}" class="img-circle" alt="Avatar do usuiário">
+              <img src="{{ asset($URI) }}" onerror="this.src='{{ asset('storage/foto/default.png') }}'" class="img-circle" alt="Avatar do usuiário">
 
               <p>
                 {{ Auth::user()->name }}

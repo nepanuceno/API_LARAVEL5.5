@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Roles;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Role;
+use Illuminate\Contracts\Auth\Access\Gate;
 
 class RolesController extends Controller
 {
-    
-    public function list(){
+    public function list(Gate $gate){
         $roles = Role::all();
+
+        if( $gate->denies('manager',$roles) )
+            abort(403,'Não Autoriazado');
 
         return view('acl.roles.listRoles', compact('roles'));
     }
@@ -20,7 +23,7 @@ class RolesController extends Controller
         return view('acl.roles.addRoles');
     }
 
-    public function add(Request $request){
+    public function add(Request $request, Gate $gate){
         
         $validatedData = $request->validate([
             'name' => 'required|unique:roles|max:50|min:3',
@@ -28,6 +31,10 @@ class RolesController extends Controller
         ]);
     
         $role = new Role;
+
+        if( $gate->denies('manager',$role) )
+            abort(403,'Não Autoriazado');
+
         $role->name = $request->name;
         $role->label = $request->label;
        
@@ -40,8 +47,11 @@ class RolesController extends Controller
         }
     }
 
-    public function delete($id){
+    public function delete($id, Gate $gate){
         $role = Role::destroy($id);
+
+        if( $gate->denies('manager',$role) )
+            abort(403,'Não Autoriazado');
        
         if($role){
             return redirect('listRoles')->with('status', 'Função removida com sucesso!');

@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -48,6 +50,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if(Auth::check() && $exception instanceof HttpException)
+            if($exception->getStatusCode() === 403){
+                return response()->view('error.403'); 
+            }
+
         if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
             return response()->json(['error'=>'token_expired'], $exception->getStatusCode());
         } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {

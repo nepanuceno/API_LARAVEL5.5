@@ -6,7 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
+use Illuminate\Contracts\Auth\Access\Gate;
 class RegisterController extends Controller
 {
     /*
@@ -34,9 +34,14 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Gate $gate)
     {
-        $this->middleware('guest');
+        if( $gate->denies('manager') )
+            abort(403,'Não Autoriazado');
+
+        $this->middleware('auth');
+
+
     }
 
     /**
@@ -60,8 +65,11 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(array $data, Gate $gate)
     {
+        if( $gate->denies('manager',$data) )
+            abort(403,'Não Autoriazado');
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

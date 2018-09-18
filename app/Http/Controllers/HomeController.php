@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Auth\Access\Gate;
 
 class HomeController extends Controller
 {
@@ -21,8 +22,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Gate $gate)
     {
+        if( $gate->denies('manager') )
+            return redirect('/perfil');
         return view('backend.index');
     }
 

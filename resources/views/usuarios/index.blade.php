@@ -6,6 +6,9 @@
   <link rel="stylesheet" href="./node_modules/sweetalert2/dist/sweetalert2.min.css">
 @endsection
 
+@section('users', 'active')
+@section('manage', 'active')
+
 @section('content')
   
   <div class="content-wrapper">
@@ -25,39 +28,47 @@
     <section class="content">
       <!-- Info boxes -->
 
-      <table id="usuarios" class="table table-bordered table-striped">
-      <thead>
-        <tr>
-            <th colspan="3"><center>Informações</center></th>
-            <th colspan="2"><center>Ações</center></th>
-        </tr>
+       <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Listagem</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
 
-        <tr>
-            <th style="vertical-align: bottom;">Nome</th>
-            <th style="vertical-align: bottom;">E-Mail</th>
-            <th style="vertical-align: bottom;">Permissão</th>
-            <th style="vertical-align: bottom;">Status</th>
-            <th style="vertical-align: bottom;">Editar</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($usuarios as $usuario)
-          <tr>
-            <td>{{ $usuario->name }}</td>
-            <td>{{ $usuario->email }}</td>
-            <td>Administrador</td>
-            @if($usuario->status)
-              <td><a class="btn btn-app btn-status" data-status="1" href="#"><i class="fa fa-check-circle text-green"></i>Ativo</a></td>
-            @else
-              <td><a class="btn btn-app btn-status" data-status="0" href="#"><i class="fa fa-check-circle text-red"></i>Inativo</a></td>
-            @endif
+              <table id="usuarios" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                    <th colspan="3"><center>Informações</center></th>
+                    <th colspan="2"><center>Ações</center></th>
+                </tr>
 
-            <td><a class="btn btn-app" href="/editaUsuario/{{ $usuario->id }}"><i class="fa fa-edit"></i>Editar</a></td>
-          </tr>
-        @endforeach
-      </tbody>
-    </table>
+                <tr>
+                    <th style="vertical-align: bottom;">Nome</th>
+                    <th style="vertical-align: bottom;">E-Mail</th>
+                    <th style="vertical-align: bottom;">Permissão</th>
+                    <th style="vertical-align: bottom;">Status</th>
+                    <th style="vertical-align: bottom;">Editar</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($usuarios as $usuario)
+                  <tr>
+                    <td>{{ $usuario->name }}</td>
+                    <td>{{ $usuario->email }}</td>
+                    <td>Administrador</td>
+                    @if($usuario->status)
+                      <td><a class="btn btn-app btn-status" data-status="1" data-id="{{ $usuario->id }}" href="#"><i class="fa fa-check-circle text-green"></i>Ativo</a></td>
+                    @else
+                      <td><a class="btn btn-app btn-status" data-status="0" data-id="{{ $usuario->id }}" href="#"><i class="fa fa-check-circle text-red"></i>Inativo</a></td>
+                    @endif
 
+                    <td><a class="btn btn-app" href="/editaUsuario/{{ $usuario->id }}"><i class="fa fa-edit"></i>Editar</a></td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
     </section>
     <!-- /.content -->
   </div>
@@ -72,36 +83,44 @@
 
 <script>
   $(function () {
-    $('#usuarios').DataTable()
+    $('#usuarios').DataTable({
+        "language":{
+            "url":"//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json",
+        }
+    });
   })
 </script>
 
 <script>
 
-  var $id = document.querySelector('.btn-status');
+  var $btnStatus = document.querySelectorAll('.btn-status');
 
-  $id.addEventListener('click',function(e){
 
-    var dataStatus = this.getAttribute("data-status"); 
+  Array.prototype.forEach.call($btnStatus, function(e){
+    e.addEventListener('click',function(e){
 
-    if(dataStatus == 1)
-      var strStatus = "Desativar";
-    else
-      var strStatus = "Ativar";
+      var dataStatus = this.getAttribute("data-status"); 
+      var id = this.getAttribute("data-id"); 
 
-    swal({
-      title: 'Status',
-      text: "Deseja realmente "+strStatus + " este usuário",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sim, '+strStatus,
-    }).then((result) => {
-      if (result.value) {
-        window.location="/updateStatusUsuario/{{ $usuario->id }}"
-      }
-    })
+      if(dataStatus == 1)
+        var strStatus = "Desativar";
+      else
+        var strStatus = "Ativar";
+
+      swal({
+        title: 'Status',
+        text: "Deseja realmente "+strStatus + " este usuário",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, '+strStatus,
+      }).then((result) => {
+        if (result.value) {
+          window.location="/updateStatusUsuario/"+id;
+        }
+      });
+    });
 
   });  
 </script>

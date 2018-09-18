@@ -24,7 +24,7 @@ class PerfilController extends Controller
             return response('ok',200);
         }
         else{
-
+            return response('ok',200);
         }
     }
 }

@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/deletePermissions/{id}','Permissions\PermissionsController@delete')->name('deletePermissions');
 
     Route::get('/userRoles/{id}','Usuario\UserRolesController@index')->name('userRoles');
+    Route::get('/userRolesDelete/{id}/{id_usu}','Usuario\UserRolesController@delete')->name('userRolesDelete');
     Route::post('/userRolesVincular/{id}','Usuario\UserRolesController@vincular')->name('userRolesVincular');
 
     Route::post('/updateUsuario','Usuario\UsuariosController@update')->name('updateUsuario');

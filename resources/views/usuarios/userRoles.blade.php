@@ -3,7 +3,7 @@
 @section('cssLink')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('adminlte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
-    <link rel="stylesheet" href="./node_modules/sweetalert2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="{{ asset('node_modules/sweetalert2/dist/sweetalert2.min.css') }}">
 @endsection
 
 @section('usuarios', 'active')
@@ -30,7 +30,7 @@
                 <!-- Info boxes -->
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Vincular<b> {{ $user->name }}</b></h3>
+                        <h3 class="box-title">Vincular</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -39,9 +39,9 @@
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label>Funções</label>
-                                <select class="form-control">
-                                    <option value="0"></option>
-                                    @foreach(App\Role::all() as $role)
+                                <select class="form-control" name="role_id" id="role_id">
+                                    <option value="0">Selecione uma Função ...</option>
+                                    @foreach($funcoes_nao_vinculadas as $role)
                                         <option value={{ $role->id }}>{{ $role->name }} - {{ $role->label }}</option>
                                     @endforeach
                                 </select>
@@ -52,6 +52,41 @@
                         </form>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
+                <div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Funções Vinculadas a <span class="text-red"> {{ $user->name }} </span></h3>
+                        </div>
+                    <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="funcoes" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Função</th>
+                                        <th>Descrição</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                    @foreach($funcoes_vinculadas as $funcao)
+                                        <tr>
+                                            <td with="45%">{{ $funcao->name }}</td>
+                                            <td with="50%">{{ $funcao->label }}</td>
+                                            <td with="5%">
+                                                <a href="#" class="btn btn-app btn-remove" data-name="{{ $funcao->name }}" data-id="{{ $funcao->id }}" data-usuario="{{ $user->id }}">
+                                                    <i class="fa fa-trash text-red"></i>
+                                                    Excluir
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
@@ -64,10 +99,11 @@
 <!-- DataTables -->
 <script src="{{ asset('adminlte/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('adminlte/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-<script src="./node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+<script src="{{ asset('node_modules/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('js/alerts.js') }}"></script>
 <script>
   $(function () {
-    $('#permissions').DataTable({
+    $('#funcoes').DataTable({
         "language":{
             "url":"//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json",
         }
@@ -77,55 +113,17 @@
 
  @if (session('status'))
     <script>
-      var msg ="{{ session('status') }}"
-      swal({
-        position: 'top-end',
-        type: 'success',
-        title: msg,
-        showConfirmButton: false,
-        timer: 2500
-      });
+        alert_succes("{{ session('status') }}");
     </script>
   @endif
 
    @if(session('error'))
     <script>
-      var msg ="{{ session('status') }}"
-      swal({
-        position: 'top-end',
-        type: 'error',
-        title: msg,
-        showConfirmButton: false,
-        timer: 3000
-      });
+        alert_error("{{ session('error') }}");
     </script>
   @endif
 
-  <script>
-
-var $funcao = document.querySelectorAll('.btn-remove');
-
-Array.prototype.forEach.call($funcao,function(e){ 
-    e.addEventListener('click',function(e){
-        var strFuncao = this.getAttribute('data-name');
-        var id = this.getAttribute('data-id');
-
-        swal({
-            title: 'Remover Função',
-            text: "Deseja realmente remover a permissão "+strFuncao,
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim',
-        }).then((result) => {
-            if (result.value) {
-                window.location="/deletePermissions/"+id
-            }
-        })
-    });
-});
-
-  
-</script>
+    <script>
+        alert_confirm('btn-remove', 'Devincular Função', 'Deseja realmente remover a função', 'warning', 'userRolesDelete');
+    </script>
 @endsection

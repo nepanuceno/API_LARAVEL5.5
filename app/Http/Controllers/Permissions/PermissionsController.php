@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\Permissions;
-
 use Illuminate\Http\Request;
 use App\Http\Requests\RequestPermission;
 use App\Http\Controllers\Controller;
@@ -46,10 +45,13 @@ class PermissionsController extends Controller
     }
 
     public function delete($id, Gate $gate){
-        $permission = Permission::destroy($id);
+
+        $permission = new Permission;
 
         if( $gate->denies('manager',$permission) )
             abort(403,'Não Autoriazado');
+
+        $permission->destroy($id);
        
         if($permission){
             return redirect('listPermissions')->with('status', 'Permissão removida com sucesso!');

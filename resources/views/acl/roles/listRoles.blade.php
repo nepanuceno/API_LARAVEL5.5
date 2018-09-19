@@ -32,12 +32,15 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <table id="roles" class="table table-bordered table-striped">
+                <table id="roles" class="table table-bordered table-striped" style="width:100%">
                     <thead>
+                        <tr>
+                            <th colspan = "2" style="text-align:center;"><h3>Informações</h3></th>
+                            <th rowspan = "2" style="text-align:center;" style="width:10%"><h3>Ações</h3></th>
+                        </tr>
                         <tr>
                             <th>Função</th>
                             <th>Descrição</th>
-                            <th>Ações</th>
                         </tr>
                     </thead>
 
@@ -46,7 +49,11 @@
                         <tr>
                             <td>{{ $role->name }}</td>
                             <td>{{ $role->label }}</td>
-                            <td>
+                            <td style="text-align:center; width=2%;">
+                                <a class="btn btn-app text-green btn-vincula" href="/rolesPermission/{{ $role->id }}">
+                                    <i class="fa fa-chain "></i>Vincular Permissões
+                                </a>
+
                                 <a class="btn btn-app text-red btn-remove" data-name="{{ $role->name }}" data-id="{{ $role->id }}">
                                     <i class="fa fa-remove"></i>Remover
                                 </a>
@@ -73,7 +80,8 @@
     $('#roles').DataTable({
         "language":{
             "url":"//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json",
-        }
+        },
+        "scrollX": true,
     });
   })
 </script>

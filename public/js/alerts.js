@@ -1,4 +1,4 @@
-function alert_succes(msg){
+function alert_success(msg){
     swal({
       position: 'top-end',
       type: 'success',
@@ -30,6 +30,7 @@ function alert_confirm(classe, titulo, texto, tipo, rota){
             var strFuncao = this.getAttribute('data-name') || "";
             var id_usuario = this.getAttribute('data-usuario') || "";
             var id = this.getAttribute('data-id') || "";
+            var idRole = this.getAttribute('data-role') || "";
 
             swal({
                 title: titulo,
@@ -41,7 +42,10 @@ function alert_confirm(classe, titulo, texto, tipo, rota){
                 confirmButtonText: 'Sim',
             }).then((result) => {
                 if (result.value) {
-                    window.location="/"+rota+"/"+id+"/"+id_usuario;
+                    if(id_usuario!="")
+                        window.location="/"+rota+"/"+id+"/"+id_usuario;
+                    else
+                        window.location="/"+rota+"/"+id+"/"+idRole;
                 }
             })
         });

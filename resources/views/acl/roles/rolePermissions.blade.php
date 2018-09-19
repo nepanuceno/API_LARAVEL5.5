@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ asset('node_modules/sweetalert2/dist/sweetalert2.min.css') }}">
 @endsection
 
-@section('usuarios', 'active')
+@section('roles', 'active')
 @section('manage', 'active')
 
 @section('content')
@@ -14,7 +14,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Usuário<i class="fa fa-chain text-purple"></i>Funções
+        Funções<i class="fa fa-chain text-purple"></i>Permissões
         <small>Vínculo</small>
       </h1>
       <ol class="breadcrumb">
@@ -23,7 +23,7 @@
       </ol>
     </section>
 
-     @if ($errors->any())
+    @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -45,19 +45,22 @@
                     <!-- /.box-header -->
                     <div class="box-body">
 
-                        <form role="form" method="post" action="{{ route('userRolesVincular',['id'=>$user->id])}}">
+                        <form role="form" method="post" action="{{ route('rolePermisionsVincular',['id'=>$role->id])}}">
                             {{ csrf_field() }}
                             <div class="form-group">
-                                <label>Funções</label>
-                                <select class="form-control" name="role_id" id="role_id">
-                                    <option value="0">Selecione uma Função ...</option>
-                                    @foreach($funcoes_nao_vinculadas as $role)
-                                        <option value={{ $role->id }}>{{ $role->name }} - {{ $role->label }}</option>
+                                <label>Permissões</label>
+                                <select class="form-control" name="permission_id" id="permission_id">
+                                    <option value="0">Selecione uma Permissão ...</option>
+                                    @foreach($permissions_liberadas as $permissao)
+                                        <option value={{ $permissao->id }}>{{ $permissao->name }} - {{ $permissao->label }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="box-footer">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-chain"></i>Vincluar</button>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-chain"></i> 
+                                    Vincluar
+                                </button>
                             </div>
                         </form>
                     </div><!-- /.box-body -->
@@ -65,26 +68,26 @@
                 <div>
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Funções Vinculadas a <span class="text-red"> {{ $user->name }} </span></h3>
+                            <h3 class="box-title">Permissões Vinculadas a <span class="text-red"> {{ $role->name }} </span></h3>
                         </div>
                     <!-- /.box-header -->
                         <div class="box-body">
                             <table id="funcoes" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Função</th>
+                                        <th>Permissão</th>
                                         <th>Descrição</th>
                                         <th>Ação</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 
-                                    @foreach($funcoes_vinculadas as $funcao)
+                                    @foreach($permissions_vinculadas as $permissao)
                                         <tr>
-                                            <td with="45%">{{ $funcao->name }}</td>
-                                            <td with="50%">{{ $funcao->label }}</td>
+                                            <td with="45%">{{ $permissao->name }}</td>
+                                            <td with="50%">{{ $permissao->label }}</td>
                                             <td with="5%">
-                                                <a href="#" class="btn btn-app btn-remove" data-name="{{ $funcao->name }}" data-id="{{ $funcao->id }}" data-usuario="{{ $user->id }}">
+                                                <a href="#" class="btn btn-app btn-remove" data-name="{{ $permissao->name }}" data-id="{{ $permissao->id }}" data-role="{{ $role->id }}">
                                                     <i class="fa fa-trash text-red"></i>
                                                     Excluir
                                                 </a>
@@ -134,6 +137,6 @@
 @endif
 
     <script>
-        alert_confirm('btn-remove', 'Devincular Função', 'Deseja realmente remover a função', 'question', 'userRolesDelete');
+        alert_confirm('btn-remove', 'Devincular Permissão', 'Deseja realmente remover a permissão', 'question', 'rolePermissionsDelete');
     </script>
 @endsection

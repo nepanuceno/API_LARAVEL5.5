@@ -34,6 +34,9 @@ class UserRolesController extends Controller
 
         $roleUser = new RoleUser;
 
+        if( $gate->denies('manager',$roleUser) )
+            abort(403,'Não Autoriazado');
+
         $roleUser->role_id = $role_id;
         
         $roleUser->user_id = $id_usuario;
@@ -48,7 +51,11 @@ class UserRolesController extends Controller
 
     public function delete($id, $id_usuario){
 
+        if( $gate->denies('manager',$id_usuario) )
+            abort(403,'Não Autoriazado');
+
         $role = RoleUser::where('role_id',$id)->where('user_id',$id_usuario)->delete();
+        
 
         if($role){
             return back()->with('status','Função desvinculada com sucesso.');

@@ -43,9 +43,9 @@
         </span>
       </a>
       <ul class="treeview-menu">
-        <li class="@yield('users')"><a href="listaUsuarios"><i class="fa fa-users"></i> Users</a></li>
-        <li class="@yield('roles')"><a href="listRoles"><i class="fa fa-cubes"></i> Funções de Usuários</a></li>
-        <li class="@yield('permissions')"><a href="listPermissions"><i class="fa  fa-unlock"></i> Permissões</a></li>
+        <li class="@yield('users')"><a href="/listaUsuarios"><i class="fa fa-users"></i> Users</a></li>
+        <li class="@yield('roles')"><a href="/listRoles"><i class="fa fa-cubes"></i> Funções de Usuários</a></li>
+        <li class="@yield('permissions')"><a href="/listPermissions"><i class="fa  fa-unlock"></i> Permissões</a></li>
         <!-- <li><a href="#"><i class="fa fa-shopping-cart"></i> Brand</a></li> -->
       </ul>
     </li>

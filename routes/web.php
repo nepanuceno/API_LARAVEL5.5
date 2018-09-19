@@ -44,6 +44,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/userRolesDelete/{id}/{id_usu}','Usuario\UserRolesController@delete')->name('userRolesDelete');
     Route::post('/userRolesVincular/{id}','Usuario\UserRolesController@vincular')->name('userRolesVincular');
 
+    Route::get('/rolesPermission/{id}','Roles\RolesPermissionController@index')->name('rolesPermission');
+    Route::get('/rolePermissionsDelete/{id}/{id_usu}','Roles\RolesPermissionController@delete')->name('rolePermissionsDelete');
+    Route::post('/rolePermisionsVincular/{id}','Roles\RolesPermissionController@vincular')->name('rolePermisionsVincular');
+
     Route::post('/updateUsuario','Usuario\UsuariosController@update')->name('updateUsuario');
     Route::get('/perfil','Usuario\PerfilController@perfil')->name('perfil');
     Route::post('/alterarFoto','Usuario\PerfilController@alterarFoto')->name('alterarFoto');

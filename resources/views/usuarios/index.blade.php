@@ -58,13 +58,26 @@
                     <td width="8%">
                       @foreach(App\User::find( $usuario->id)->roles as $role)
                         <span class="label label-success">{{ $role->name }} </span>
+                        <?php
+                            if($role->name === "administrador"){
+                              $tag = null;
+                            }
+                            else
+                              $tag = true;
+                        ?>
                       @endforeach
                    </td>
 
                    
                       <td width="8%">
                         @if(App\User::find($usuario->id)->status==1)
-                          <a class="btn btn-app" href="/userRoles/{{$usuario->id}}"><i class="fa fa-chain text-purple"></i>Vincular Permissão</a>
+                            @if($tag)
+                            <a class="btn btn-app" href="/userRoles/{{$usuario->id}}">
+                              <i class="fa fa-chain text-purple"></i>
+                              Vincular Permissão
+                            </a>
+                            @endif
+                         
                         @endif
                       </td>
                    

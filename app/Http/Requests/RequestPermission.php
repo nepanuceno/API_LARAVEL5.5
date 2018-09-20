@@ -24,7 +24,7 @@ class RequestPermission extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:roles|max:50|min:3',
+            'name' => 'required|unique:permissions|max:50|min:3',
             'label' => 'required',
         ];
     }

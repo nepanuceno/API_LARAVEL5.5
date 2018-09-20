@@ -24,8 +24,9 @@ class HomeController extends Controller
      */
     public function index(Gate $gate)
     {
-        if( $gate->denies('manager') )
+         if( $gate->denies('manager') )
             return redirect('/perfil');
+
         return view('backend.index');
     }
 

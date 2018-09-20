@@ -57,7 +57,7 @@
                     <td>{{ $usuario->email }}</td>
                     <td width="8%">
                       @foreach(App\User::find( $usuario->id)->roles as $role)
-                        <span class="label label-success">{{ $role->name }} </span>
+                        <p><span class="label label-success">{{ $role->name }} </span></p>
                         <?php
                             if($role->name === "administrador"){
                               $tag = null;

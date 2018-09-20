@@ -28,14 +28,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         $permissions = Permission::with('roles')->get();
-
         foreach($permissions as $permission)
         {
-            $gate->define($permission->name, function(User $user){
+            $gate->define($permission->name, function(User $user) use ($permission) {
+
                 return $user->hasPermission($permission);
             });
         }
-
 
         //Antes de verificar o Gate, verifica se o usuario logado é administrador, se for, retorna true.
         $gate->before(function(User $user){

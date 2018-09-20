@@ -9,15 +9,25 @@ use App\Role;
 use App\RoleUser;
 use App\Http\Requests\UserRoleCreate;
 
+use Illuminate\Contracts\Auth\Access\Gate;
+
 class UserRolesController extends Controller
 {
     private $id_user;
+
+    public function __construct(Gate $gate)
+    {
+        $this->gate = $gate;
+    }
 
     public function index($id){
 
         $this->id_user = $id;
 
         $user = User::find($id);
+
+        if( $this->gate->denies('manager',$user) )
+            abort(403,'Não Autoriazado');
 
         $funcoes_vinculadas = $user->roles;
 
@@ -34,7 +44,7 @@ class UserRolesController extends Controller
 
         $roleUser = new RoleUser;
 
-        if( $gate->denies('manager',$roleUser) )
+        if( $this->gate->denies('manager',$roleUser) )
             abort(403,'Não Autoriazado');
 
         $roleUser->role_id = $role_id;
@@ -49,9 +59,10 @@ class UserRolesController extends Controller
         }
     }
 
-    public function delete($id, $id_usuario){
+    public function delete($id, $id_usuario)
+    {
 
-        if( $gate->denies('manager',$id_usuario) )
+        if( $this->gate->denies('manager',$id_usuario) )
             abort(403,'Não Autoriazado');
 
         $role = RoleUser::where('role_id',$id)->where('user_id',$id_usuario)->delete();

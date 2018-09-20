@@ -29,25 +29,44 @@
 
     <li class="@yield('backend')">
       <a href="/backend">
-        <i class="fa fa-home"></i> <span>Home</span>
+        <i class="fa fa-home text-green"></i> <span>Home</span>
         <span class="pull-right-container">
-          <small class="label pull-right bg-green">new</small>
+         <!-- <small class="label pull-right bg-green">new</small> -->
         </span>
       </a>
     </li>
     <li class="treeview @yield('manage')">
       <a href="#">
-        <i class="fa fa-database"></i> <span>Manage</span>
+        <i class="fa fa-database text-blue"></i> <span>Gerente</span>
         <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
       </a>
       <ul class="treeview-menu">
-        <li class="@yield('users')"><a href="/listaUsuarios"><i class="fa fa-users"></i> Users</a></li>
+        <li class="@yield('users')"><a href="/listaUsuarios"><i class="fa fa-users"></i> Usuários</a></li>
+        <!--
         <li class="@yield('roles')"><a href="/listRoles"><i class="fa fa-cubes"></i> Funções de Usuários</a></li>
         <li class="@yield('permissions')"><a href="/listPermissions"><i class="fa  fa-unlock"></i> Permissões</a></li>
-        <!-- <li><a href="#"><i class="fa fa-shopping-cart"></i> Brand</a></li> -->
+        <li><a href="#"><i class="fa fa-shopping-cart"></i> Brand</a></li>
+         -->
       </ul>
     </li>
+
+
+    @can('administrador', App\User::class)
+      <li class="treeview @yield('administrador')">
+        <a href="#">
+          <i class="fa fa-star text-yellow"></i> <span>Administrador</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li class="@yield('roles')"><a href="/listRoles"><i class="fa fa-cubes"></i> Funções de Usuários</a></li>
+          <li class="@yield('permissions')"><a href="/listPermissions"><i class="fa  fa-unlock"></i> Permissões</a></li>
+          <!-- <li><a href="#"><i class="fa fa-shopping-cart"></i> Brand</a></li> -->
+        </ul>
+      </li>
+    @endcan
   </ul>
 </section>

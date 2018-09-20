@@ -37,56 +37,73 @@
         <li class="active">Foto</li>
       </ol>
     </section>
+
+    <?php
+      $URI = "/storage/foto/avatar_".Auth::user()->id.".png";
+    ?>
     
     <!-- Main content -->
     <div class="container">
         <section class="content">
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <!-- <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture"> -->
 
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Avatar</h3>
-                        </div>
-                        <div class="box-body no-padding">
-                            <ul class="users-list clearfix">
-                                <li>
-                                    <?php
-                                        $URI = "/storage/foto/avatar_".Auth::user()->id.".png";
-                                    ?>
-                                    <label class="label" data-toggle="tooltip" title="Mudar avatar">
-                                        <img class="rounded" id="avatar" src="{{ asset($URI) }}" onerror="this.src='{{ asset('storage/foto/default.png') }}'" alt="avatar">
-                                        <input type="file" class="sr-only" id="input" name="image" accept="image/*">
-                                    </label>
-                                </li> 
-                            </ul>
-                        </div>
-                        <div class="box-footer text-center">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-                            </div>
-                        </div>
-                    </div>
+              <label class="label" data-toggle="tooltip" title="Mudar avatar">
+                  <img class="profile-user-img img-responsive img-circle" id="avatar" src="{{ asset($URI) }}" onerror="this.src='{{ asset('storage/foto/default.png') }}'" alt="avatar">
+                  <input type="file" class="sr-only" id="input" name="image" accept="image/*">
+              </label>
 
-            
+              <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
+
+              <p class="text-muted text-center">Software Engineer</p>
+<!--
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Followers</b> <a class="pull-right">1,322</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Following</b> <a class="pull-right">543</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Friends</b> <a class="pull-right">13,287</a>
+                </li>
+              </ul>
+              <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+-->
+              
+            </div>
+
+            <!-- /.box-body -->
+            <div class="box-footer text-center">
+              <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+              </div>
+            </div>
+
+          </div>
+        
             <div class="alert" role="alert"></div>
-            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+              <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalLabel">Cortar Imagem</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="img-container">
-                                <img id="image" src="https://avatars0.githubusercontent.com/u/3456749">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="crop">Crop</button>
-                        </div>
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalLabel">Cortar Imagem</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
+                    <div class="modal-body">
+                      <div class="img-container">
+                        <img id="image" src="https://avatars0.githubusercontent.com/u/3456749">
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn btn-primary" id="crop">Crop</button>
+                    </div>
+                  </div>
                 </div>
             </div>
         </section>

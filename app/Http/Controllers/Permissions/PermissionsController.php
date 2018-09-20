@@ -13,7 +13,7 @@ class PermissionsController extends Controller
     public function list(Gate $gate){
         $permissions = Permission::all();
 
-        if( $gate->denies('manager',$permissions) )
+        if( $gate->denies('administrador',$permissions) )
             abort(403,'Não Autoriazado');
 
         return view('acl.permissions.listPermissions', compact('permissions'));
@@ -30,7 +30,7 @@ class PermissionsController extends Controller
         $permission->name = $request->name;
         $permission->label = $request->label;
 
-        if( $gate->denies('manager',$permission) )
+        if( $gate->denies('administrador',$permission) )
             abort(403,'Não Autoriazado');
 
         if( $gate->denies('manager',$permission) )
@@ -48,7 +48,7 @@ class PermissionsController extends Controller
 
         $permission = new Permission;
 
-        if( $gate->denies('manager',$permission) )
+        if( $gate->denies('administrador',$permission) )
             abort(403,'Não Autoriazado');
 
         $permission->destroy($id);

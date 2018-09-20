@@ -9,16 +9,25 @@ use Illuminate\Contracts\Auth\Access\Gate;
 
 class RolesController extends Controller
 {
-    public function list(Gate $gate){
-        $roles = Role::all();
+    public function __construct(Gate $gate, Role $role)
+    {
+        $this->gate = $gate;
+        $this->role = $role;
+    }
+    public function list(){
+        $roles = $this->role->all();
 
-        if( $gate->denies('manager',$roles) )
+        if( $this->gate->denies('administrador',$roles) )
             abort(403,'Não Autoriazado');
 
         return view('acl.roles.listRoles', compact('roles'));
     }
 
     public function form(){
+
+        if( $this->gate->denies('administrador',$roles) )
+            abort(403,'Não Autoriazado');
+
 
         return view('acl.roles.addRoles');
     }
@@ -32,7 +41,7 @@ class RolesController extends Controller
     
         $role = new Role;
 
-        if( $gate->denies('manager',$role) )
+        if( $this->gate->denies('administrador',$role) )
             abort(403,'Não Autoriazado');
 
         $role->name = $request->name;
@@ -47,10 +56,10 @@ class RolesController extends Controller
         }
     }
 
-    public function delete($id, Gate $gate){
+    public function delete($id){
         $role = Role::destroy($id);
 
-        if( $gate->denies('manager',$role) )
+        if( $this->gate->denies('administrador',$role) )
             abort(403,'Não Autoriazado');
        
         if($role){

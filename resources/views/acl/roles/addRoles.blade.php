@@ -5,7 +5,7 @@
 @endsection
 
 @section('roles', 'active')
-@section('manage', 'active')
+@section('administrador', 'active')
 
 @section('content')
 <!-- Content Header (Page header) -->

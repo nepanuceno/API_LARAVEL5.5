@@ -7,7 +7,7 @@
 @endsection
 
 @section('permissions', 'active')
-@section('manage', 'active')
+@section('administrador', 'active')
 
 @section('content')
 <div class="content-wrapper">
